@@ -19,7 +19,15 @@
             </div>     
             <div style="padding-top:30px" class="panel-body" >                   
                 <form id="login-form" class="form-horizontal" role="form" action="{% url 'login' %}" method="POST">
-                    {% csrf_token %}        
+                    {% csrf_token %} 
+                    {% if form.non_field_errors %}
+                    <div class="alert alert-danger alert-dismissable">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        {% for error in form.non_field_errors %}
+                        <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
                     <div style="margin-bottom: 25px" class="input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
                         <input id="login-username" type="text" class="form-control" name="username" value="" placeholder="Username" required >                                        
