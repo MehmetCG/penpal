@@ -2,7 +2,7 @@ from urllib import request
 from django.shortcuts import render
 from django.views.generic import TemplateView, DetailView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from rest_framework.generics import ListCreateAPIView
+from rest_framework.generics import ListCreateAPIView, CreateAPIView
 from .serializers import UserSerializer
 from django.conf.global_settings import LANGUAGES
 from django_countries import countries
@@ -36,10 +36,6 @@ class ProfileDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView)
         return self.request.user == self.get_object()
 
 
-class UserListCreateView(ListCreateAPIView):
+class UserCreateView(CreateAPIView):
     serializer_class = UserSerializer
-    
-    def get_queryset(self):
-        self.queryset = User.objects.exclude(username=self.request.user)
-        return super().get_queryset()
     
