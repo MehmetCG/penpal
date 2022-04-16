@@ -36,13 +36,13 @@ ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
 # Application definition
 
 INSTALLED_APPS = [
-    'pages',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'pages',
     'django_countries',
     'rest_framework',
 ]
@@ -139,5 +139,3 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'statics')]
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = 'home'
-
-AUTH_USER_MODEL = 'pages.User'

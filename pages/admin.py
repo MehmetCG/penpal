@@ -1,10 +1,23 @@
 from django.contrib import admin
-from .models import User
+from django.contrib.auth.admin import UserAdmin
+from .models import Profile, User
 
-class UserAdmin(admin.ModelAdmin):
+
+class CustomUserAdmin(UserAdmin):
+    add_fieldsets = (
+        (
+            None,
+            {
+                "classes": ("wide",),
+                "fields": ("username", "password1", "password2", "email",),
+            },
+        ),
+    )
+
+
+class ProfileAdmin(admin.ModelAdmin):
     list_display = (
-        "username", 
-        "email", 
+        "user",
         "age",
         "gender",
         "country", 
@@ -20,4 +33,6 @@ class UserAdmin(admin.ModelAdmin):
     )
 
 
-admin.site.register(User, UserAdmin)
+admin.site.unregister(User)
+admin.site.register(User, CustomUserAdmin)
+admin.site.register(Profile, ProfileAdmin)
