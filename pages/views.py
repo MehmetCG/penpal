@@ -3,11 +3,11 @@ from django.shortcuts import render
 from django.views.generic import TemplateView, DetailView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.hashers import make_password
-from rest_framework.generics import ListCreateAPIView, CreateAPIView
-from .serializers import UserSerializer
+from rest_framework.generics import CreateAPIView, ListAPIView
+from .serializers import ProfileSerializer, UserSerializer
 from django.conf.global_settings import LANGUAGES
 from django_countries import countries
-from.models import User
+from.models import Profile, User
 
 class HomeView(LoginRequiredMixin, TemplateView):
     login_url = "login"
@@ -44,3 +44,8 @@ class UserCreateView(CreateAPIView):
         password = request.data["password"]
         request.data["password"] = make_password(password)
         return super().post(request, *args, **kwargs)
+
+
+class ProfileListView(ListAPIView):
+    queryset = Profile.objects.filter(country__isnull=False)
+    serializer_class = ProfileSerializer
