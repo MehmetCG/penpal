@@ -18,7 +18,7 @@
                 <a onclick="showSignup()"><div class="panel-title" style="float:right;  position: relative; top:-20px">Sign up</div></a>
             </div>     
             <div style="padding-top:30px" class="panel-body" >                   
-                <form id="loginform" class="form-horizontal" role="form" action="{% url 'login' %}" method="POST">
+                <form id="login-form" class="form-horizontal" role="form" action="{% url 'login' %}" method="POST">
                     {% csrf_token %}        
                     <div style="margin-bottom: 25px" class="input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
@@ -57,7 +57,7 @@
                 <div class="panel-title" style="float:right; position: relative; top:-20px; color: blue;">Sign up</div>
             </div>     
             <div style="padding-top:30px" class="panel-body" >                  
-                <form id="loginform" class="form-horizontal" role="form" action="#" method="POST" autocomplete="off" >
+                <form id="signup-form" class="form-horizontal" role="form" action="#" method="POST" autocomplete="off" >
                     {% csrf_token %} 
                     <div class="alert alert-info alert-dismissable">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
@@ -66,24 +66,24 @@
                     </div>       
                     <div style="margin-bottom: 25px" class="input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
-                        <input id="login-username" type="email" class="form-control" name="email" value="" placeholder="Email" required >                                        
+                        <input id="signup-email" type="email" class="form-control" name="email" value="" placeholder="Email" required >                                        
                     </div>
                     <div style="margin-bottom: 25px" class="input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                        <input id="login-username" type="text" class="form-control" name="uname" value="" placeholder="Username" pattern="[a-zA-Z0-9]+" required > 
+                        <input id="signup-username" type="text" class="form-control" name="uname" value="" placeholder="Username" pattern="[a-zA-Z0-9]+" required > 
                     </div>
                         
                     <div style="margin-bottom: 25px" class="input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                        <input id="login-password" type="password" class="form-control" name="psw" placeholder="Password" required>
+                        <input id="signup-password1" type="password" class="form-control" name="psw" placeholder="Password" required>
                     </div>
                     <div style="margin-bottom: 25px" class="input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                        <input id="login-password" type="password" class="form-control" name="psw-repeat" placeholder="Repeat password" required >
+                        <input id="signup-password2" type="password" class="form-control" name="psw-repeat" placeholder="Repeat password" required >
                     </div>    
                     <div style="margin-top:10px" class="form-group">
                         <div class="col-sm-12 controls">
-                            <button class="btn btn-primary" type="submit">Sign Up</button>
+                            <button id=signup-submit onclick="createUser()" class="btn btn-primary" type="submit">Sign Up</button>
                         </div>
                     </div>
                     </div>    

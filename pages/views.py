@@ -2,6 +2,7 @@ from urllib import request
 from django.shortcuts import render
 from django.views.generic import TemplateView, DetailView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.hashers import make_password
 from rest_framework.generics import ListCreateAPIView, CreateAPIView
 from .serializers import UserSerializer
 from django.conf.global_settings import LANGUAGES
@@ -39,3 +40,7 @@ class ProfileDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView)
 class UserCreateView(CreateAPIView):
     serializer_class = UserSerializer
     
+    def post(self, request, *args, **kwargs):
+        password = request.data["password"]
+        request.data["password"] = make_password(password)
+        return super().post(request, *args, **kwargs)
