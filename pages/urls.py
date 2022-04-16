@@ -5,7 +5,11 @@ from .views import *
 
 
 urlpatterns = [
-    path("login/", LoginView.as_view(template_name="login.html"), name="login"),
+    path(
+        "login/", 
+        LoginView.as_view(template_name="login.html", redirect_authenticated_user=True), 
+        name="login"
+    ),
     path("logout/", LogoutView.as_view(template_name="login.html"), name="logout"),
     path("", HomeView.as_view(), name="home" ),
     path("profile/<username>/", ProfileDetailView.as_view(), name="profile"),
