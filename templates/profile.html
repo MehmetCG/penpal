@@ -1,7 +1,5 @@
 {% extends "layout.html" %}
 {% load static %}
-{% load countries %}
-{% get_countries as countries %}
 
 {% block head %}
     <title>Profile Update</title>
@@ -27,7 +25,7 @@
                             <div class="col-sm-4">
                                 <div class="form-group">                                                          
                                         <label for="age" >Age</label>               
-                                        <input type="number" class="form-control" id="age" name="age" value= {{ object.age }} required>                                 
+                                        <input type="number" class="form-control" id="age" name="age" value={{object.age}} required>                                 
                                 </div>
                             </div>
                             <div class="col-sm-4">
@@ -35,8 +33,8 @@
                                         <label for="gender" >Gender</label>                             
                                         <select class="form-control" id="gender" name="gender" required >
                                             <option>{{object.get_gender_display}}</option>
-                                            <option>Male</option>
-                                            <option>Female</option>
+                                            <option value="M">Male</option>
+                                            <option value="F">Female</option>
                                         </select>                                    
                                 </div>   
                             </div>
@@ -46,7 +44,7 @@
                                         <select class="form-control" id="country" name="country" required >
                                             <option>{{object.get_country_display}}</option>
                                             {% for country in countries %}
-                                                <option>{{country.name}}</option>
+                                                <option value="{{country.0}}">{{country.1}}</option>
                                             {% endfor %}
                                         </select>                               
                                 </div>
@@ -59,7 +57,7 @@
                                         <select class="form-control" id="nativeLanguage" name="nativeLanguage" required >
                                             <option>{{object.get_native_language_display}}</option>
                                             {% for language in languages %}
-                                                <option>{{language.1}}</option>
+                                                <option value="{{language.0}}">{{language.1}}</option>
                                             {% endfor %}
                                         </select>                                       
                                 </div>
@@ -70,7 +68,7 @@
                                     <select class="form-control" id="practisingLanguage" name="practisingLanguage" required>
                                         <option>{{object.get_practising_language_display}}</option>
                                         {% for language in languages %}
-                                            <option>{{language.1}}</option>
+                                            <option value="{{language.0}}">{{language.1}}</option>
                                         {% endfor %}
                                     </select>   
                                 </div>
