@@ -3,8 +3,60 @@
 
 {% block head %}
 <title>Home</title>
+<link rel="stylesheet" href="{% static 'css/profile.css' %}">
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 {% endblock %}
 
 {% block content %}
-Home Page
+<div class="col-md-9" id="profiles"  style="float: right; padding: 1%;" >        
+</div>
+<div class="col-md-3 bg-light" id="filter" style="float:left; padding:1%; " >
+    <form action="{% url 'home' %}" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="age1">Min Age</label>                      
+            <input id="age1" name="age1" class="form-control"></input>        
+        </div>
+        <div class="form-group">
+            <label for="age2">Max Age</label>                      
+            <input id="age2" name="age2" class="form-control"></input>          
+        </div>
+        <div class="form-group">
+            <label for="gender">Gender</label>
+            <select class="form-control" id="gender" name="gender" >
+                <option selected="selected" >Both</option>
+                <option value="M">Male</option>
+                <option value="F">Female</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="country">Country</label>
+            <select class="form-control" id="country" name="country">
+                <option selected="selected">All</option>
+                {% for country in countries %}
+                <option value="{{ country.0 }}">{{country.1}}</option>
+                {% endfor %}
+            </select>                       
+        </div>
+        <div class="form-group">
+            <label for="nativeLanguage" >Native Language</label>
+            <select class="form-control" id="nativeLanguage" name="nativeLanguage" >
+                <option selected="selected">All</option>
+                {% for language in languages %}
+                <option value="{{language.0}}">{{language.1}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="practisingLanguage">Practising Language</label>
+            <select class="form-control" id="practisingLanguage" name="practisingLanguage" >
+                <option selected="selected">All</option>
+                {% for language in languages %}
+                <option value="{{language.0}}">{{language.1}}</option>
+                {% endfor %}
+            </select>      
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Search</button>
+    </form>
+</div>
 {% endblock %}
