@@ -2,11 +2,12 @@ from django.views.generic import TemplateView, DetailView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.hashers import make_password
 from django.conf.global_settings import LANGUAGES
-from rest_framework.generics import CreateAPIView, ListAPIView
+from rest_framework.generics import CreateAPIView, ListAPIView, UpdateAPIView
 from django_filters import rest_framework as filters
 from django_countries import countries
 from .models import Profile, User
-from .serializers import ProfileSerializer, UserSerializer
+from .serializers import ProfileReadSerializer, UserSerializer, ProfileWriteSerializer
+
 
 class HomeView(LoginRequiredMixin, TemplateView):
     login_url = "login"
@@ -17,6 +18,7 @@ class HomeView(LoginRequiredMixin, TemplateView):
        context["languages"] = LANGUAGES
        context["countries"] = countries
        return context
+
 
 class ProfileDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     login_url = "login"
@@ -55,8 +57,16 @@ class ProfileFilter(filters.FilterSet):
             "gender", "country", "native_language", "practising_language"
         ]
 
+
 class ProfileListView(ListAPIView):
     queryset = Profile.objects.filter(country__isnull=False)
-    serializer_class = ProfileSerializer
+    serializer_class = ProfileReadSerializer
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_class = ProfileFilter
+
+
+class ProfileUpdateView(UpdateAPIView):
+    serializer_class = ProfileWriteSerializer
+    queryset = Profile.objects.all()
+    lookup_field = "user__username"
+    lookup_url_kwarg = "username"

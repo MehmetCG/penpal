@@ -9,7 +9,7 @@ class UserSerializer(serializers.ModelSerializer):
             fields = ("username", "email", "password")
 
 
-class ProfileSerializer(serializers.ModelSerializer):
+class ProfileReadSerializer(serializers.ModelSerializer):
     username = serializers.SerializerMethodField()
     last_login = serializers.SerializerMethodField()
     gender = serializers.CharField(source='get_gender_display')
@@ -22,6 +22,13 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     def get_last_login(self, obj):
         return obj.last_login.strftime("%H:%M, %d %B %Y")
+    class Meta:
+        model = Profile
+        fields = "__all__"
+
+
+class ProfileWriteSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Profile
         fields = "__all__"
