@@ -31,4 +31,4 @@ class ProfileWriteSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
-        fields = "__all__"
+        exclude = ("image",)
