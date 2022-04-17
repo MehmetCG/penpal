@@ -1,15 +1,20 @@
 
 $(document).ready(function(){
 
+    function showNotification(type, element_id, error_message){
+        document.getElementById(element_id).insertAdjacentHTML(
+            "afterbegin",
+            "<div class='alert alert-"+type+" alert-dismissable'>"
+            +"<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button>"
+            +error_message+"</div>"
+        )
+    }
+    
     function showFilterResult(profiles) {
         $("#profiles").empty()
         
         if(profiles.length == 0){
-            $("#profiles").append(
-                "<div class='alert alert-warning alert-dismissable'>"
-                +"<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button>"
-                +"Sorry! No result found :(</div>"
-            )
+            showNotification("info", "profiles", "Sorry! No result found!")
         }else{
             window.scrollTo(0,0);
         
@@ -71,10 +76,9 @@ $(document).ready(function(){
             headers: {"X-CSRFToken":'{{csrf_token}}'},           
             success: function (data) {
                 showFilterResult(data)
-                console.log(data)
             },
-            error: function(response) {                          
-                console.log(response.responseText)
+            error: function(response) {    
+                showNotification("danger", "profiles", response.responseText)                      
             }       
         });       
     });

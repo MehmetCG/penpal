@@ -9,7 +9,7 @@ $(document).ready(function(){
         $("#signup-page").show();    
     }
 
-    function show_notification(type, element_id, error_message){
+    function showNotification(type, element_id, error_message){
         document.getElementById(element_id).insertAdjacentHTML(
             "afterbegin",
             "<div class='alert alert-"+type+" alert-dismissable'>"
@@ -26,7 +26,7 @@ $(document).ready(function(){
         var password2 = $("#signup-password2").val();
 
         if (password1 != password2){
-            show_notification("danger", "signup-form", "Passwords do not match!");
+            showNotification("danger", "signup-form", "Passwords do not match!");
         }else{
             var data = JSON.stringify({
                 "email": email,
@@ -43,11 +43,11 @@ $(document).ready(function(){
                 success: function (data) {
                     $('#signup-form')[0].reset();
                     showLogin();
-                    show_notification("success", "login-form", 
+                    showNotification("success", "login-form", 
                     "Your account has been created successfully!");
                 },
                 error: function(response) {                          
-                    show_notification("danger", "signup-form", response.responseText)
+                    showNotification("danger", "signup-form", response.responseText)
                }
             });         
         }
