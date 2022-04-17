@@ -26,7 +26,7 @@ $(document).ready(function(){
         var password2 = $("#signup-password2").val();
 
         if (password1 != password2){
-            show_notificaton("error", "signup-form", "Passwords do not match!")
+            show_notification("danger", "signup-form", "Passwords do not match!");
         }else{
             var data = JSON.stringify({
                 "email": email,

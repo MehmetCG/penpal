@@ -1,6 +1,6 @@
 from webbrowser import get
 from rest_framework import serializers
-from .models import User, Profile
+from .models import GENDERS, User, Profile
 
 
 class UserSerializer(serializers.ModelSerializer): 
@@ -12,6 +12,10 @@ class UserSerializer(serializers.ModelSerializer):
 class ProfileSerializer(serializers.ModelSerializer):
     username = serializers.SerializerMethodField()
     last_login = serializers.SerializerMethodField()
+    gender = serializers.CharField(source='get_gender_display')
+    country = serializers.CharField(source='get_country_display')
+    native_language = serializers.CharField(source='get_native_language_display')
+    practising_language = serializers.CharField(source='get_practising_language_display')
 
     def get_username(self, obj):
         return obj.user.username

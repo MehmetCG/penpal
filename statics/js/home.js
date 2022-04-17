@@ -2,11 +2,15 @@
 $(document).ready(function(){
 
     function showFilterResult(profiles) {
-
+        $("#profiles").empty()
+        
         if(profiles.length == 0){
-            alert("There is no profile that is matched with your filter!")
+            $("#profiles").append(
+                "<div class='alert alert-warning alert-dismissable'>"
+                +"<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button>"
+                +"Sorry! No result found :(</div>"
+            )
         }else{
-            $("#profiles").empty()
             window.scrollTo(0,0);
         
             for (i = 0; i<profiles.length; i++){
