@@ -23,9 +23,9 @@ class HomeView(LoginRequiredMixin, TemplateView):
 class ProfileDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
     login_url = "login"
     template_name = "profile.html"
-    slug_field = "username"
+    slug_field = "user__username"
     slug_url_kwarg = "username"
-    model = User
+    model = Profile
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
@@ -35,7 +35,7 @@ class ProfileDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView)
         return self.render_to_response(context)
 
     def has_permission(self):
-        return self.request.user == self.get_object()
+        return self.request.user == self.get_object().user
 
 
 class UserCreateView(CreateAPIView):

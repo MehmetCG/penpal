@@ -32,7 +32,7 @@
                                 <div class="form-group">                                                       
                                         <label for="gender" >Gender</label>                             
                                         <select class="form-control" id="gender" name="gender" required >
-                                            <option>{{object.get_gender_display}}</option>
+                                            <option value={{object.gender}}>{{object.get_gender_display}}</option>
                                             <option value="M">Male</option>
                                             <option value="F">Female</option>
                                         </select>                                    
@@ -42,7 +42,7 @@
                                 <div class="form-group">                                                        
                                         <label for="country" >Country</label>                            
                                         <select class="form-control" id="country" name="country" required >
-                                            <option>{{object.get_country_display}}</option>
+                                            <option value={{object.country}}>{{object.get_country_display}}</option>
                                             {% for country in countries %}
                                                 <option value="{{country.0}}">{{country.1}}</option>
                                             {% endfor %}
@@ -55,7 +55,7 @@
                                 <div class="form-group">                               
                                         <label for="nativeLanguage" >Native Language</label>                       
                                         <select class="form-control" id="nativeLanguage" name="nativeLanguage" required >
-                                            <option>{{object.get_native_language_display}}</option>
+                                            <option value={{object.native_language}}>{{object.get_native_language_display}}</option>
                                             {% for language in languages %}
                                                 <option value="{{language.0}}">{{language.1}}</option>
                                             {% endfor %}
@@ -66,7 +66,7 @@
                                 <div class="form-group">                         
                                     <label for="practisingLanguage">Practising Language</label>              
                                     <select class="form-control" id="practisingLanguage" name="practisingLanguage" required>
-                                        <option>{{object.get_practising_language_display}}</option>
+                                        <option value={{object.practising_language}}>{{object.get_practising_language_display}}</option>
                                         {% for language in languages %}
                                             <option value="{{language.0}}">{{language.1}}</option>
                                         {% endfor %}
