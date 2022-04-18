@@ -2,6 +2,7 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth.models import User
+from django.contrib.auth.signals import user_logged_in, user_logged_out
 from django.utils.translation import gettext_lazy as _
 from django_countries.fields import CountryField
 from django.conf.global_settings import LANGUAGES
@@ -35,3 +36,17 @@ class Profile(models.Model):
 def create_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
+
+@receiver(user_logged_in)
+def make_online(sender, user, request, **kwargs):
+    user.profile.is_online = True
+    user.profile.save()
+
+@receiver(user_logged_out)
+def make_offline(sender, user, request, **kwargs):
+    try:
+        user.profile.is_online = False
+        user.profile.save()
+    except:
+        # user is None if it was not authenticated
+        pass
