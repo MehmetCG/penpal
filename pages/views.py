@@ -3,6 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMix
 from django.contrib.auth.hashers import make_password
 from django.conf.global_settings import LANGUAGES
 from rest_framework.generics import CreateAPIView, ListAPIView, UpdateAPIView
+from rest_framework import permissions
 from django_filters import rest_framework as filters
 from django_countries import countries
 from .models import Profile, User
@@ -65,8 +66,15 @@ class ProfileListView(ListAPIView):
     filterset_class = ProfileFilter
 
 
+class IsOwnerOrAdmin(permissions.BasePermission):
+
+    def has_object_permission(self, request, view, obj):
+        return request.user.is_staff or request.user == obj.user
+
+
 class ProfileUpdateView(UpdateAPIView):
     serializer_class = ProfileWriteSerializer
     queryset = Profile.objects.all()
     lookup_field = "user__username"
     lookup_url_kwarg = "username"
+    permission_classes = [IsOwnerOrAdmin,]
