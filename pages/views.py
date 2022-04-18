@@ -60,10 +60,16 @@ class ProfileFilter(filters.FilterSet):
 
 
 class ProfileListView(ListAPIView):
-    queryset = Profile.objects.filter(country__isnull=False)
+    queryset = Profile.objects.all()
     serializer_class = ProfileReadSerializer
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_class = ProfileFilter
+
+    def get_queryset(self):
+        queryset = self.queryset.filter(country__isnull=False) \
+                                .exclude(user=self.request.user) \
+                                .order_by("user__last_login")
+        return queryset
 
 
 class IsOwnerOrAdmin(permissions.BasePermission):
