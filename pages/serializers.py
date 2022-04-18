@@ -21,7 +21,8 @@ class ProfileReadSerializer(serializers.ModelSerializer):
         return obj.user.username
 
     def get_last_login(self, obj):
-        return obj.last_login.strftime("%H:%M, %d %B %Y")
+        last_login = obj.user.last_login or obj.user.date_joined
+        return last_login.strftime("%H:%M, %d %B %Y")
     class Meta:
         model = Profile
         fields = "__all__"

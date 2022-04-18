@@ -26,7 +26,6 @@ class Profile(models.Model):
     description = models.TextField(blank=True, null=True)
     image = models.ImageField(upload_to="images", default="default-profile-picture.jpg")
     is_online = models.BooleanField(default=False)
-    last_login = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.user.username
