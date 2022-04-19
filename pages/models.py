@@ -17,6 +17,12 @@ GENDERS = [
 User._meta.get_field('email')._unique = True
 User._meta.get_field('email').blank = False
 User._meta.get_field('email').null = False
+
+def get_deleted_user():
+    deleted_user, _ = User.objects.get_or_create(username="Deleted")
+    return deleted_user
+
+
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     age = models.SmallIntegerField(default=0, blank=True)
@@ -30,6 +36,17 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.username
+
+
+class Message(models.Model):
+    sender = models.ForeignKey(User, on_delete=models.SET(get_deleted_user), related_name="sender")
+    recipient = models.ForeignKey(User, on_delete=models.SET(get_deleted_user), related_name= "recipient")
+    text = models.TextField(null=True)
+    created_at = models.DateTimeField(auto_now_add= True)
+    is_seen = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.text
 
 
 @receiver(post_save, sender=User)
