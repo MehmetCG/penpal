@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import Message, Profile, User
+from .models import Message, Profile, User, LatestMessage
 
 
 class CustomUserAdmin(UserAdmin):
@@ -29,7 +29,13 @@ class MessageAdmin(admin.ModelAdmin):
     list_filter = ("sender", "recipient", "created_at")
 
 
+class LatestMessageAdmin(admin.ModelAdmin):
+    list_display = ("text",)
+    list_filter = ("senders", "created_at")
+
+
 admin.site.unregister(User)
 admin.site.register(User, CustomUserAdmin)
 admin.site.register(Profile, ProfileAdmin)
 admin.site.register(Message, MessageAdmin)
+admin.site.register(LatestMessage, LatestMessageAdmin)

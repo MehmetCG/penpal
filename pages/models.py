@@ -1,3 +1,4 @@
+from pyexpat import model
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -41,12 +42,18 @@ class Profile(models.Model):
 class Message(models.Model):
     sender = models.ForeignKey(User, on_delete=models.SET(get_deleted_user), related_name="sender")
     recipient = models.ForeignKey(User, on_delete=models.SET(get_deleted_user), related_name= "recipient")
-    text = models.TextField(null=True)
+    text = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add= True)
     is_seen = models.BooleanField(default=False)
 
     def __str__(self):
         return self.text
+
+
+class LatestMessage(models.Model):
+    senders = models.ManyToManyField(User)
+    created_at = models.DateTimeField(auto_now=True)
+    text = models.TextField(blank=True, null=True)
 
 
 @receiver(post_save, sender=User)
@@ -67,3 +74,14 @@ def make_offline(sender, user, request, **kwargs):
     except:
         # user is None if it was not authenticated
         pass
+
+@receiver(post_save, sender=Message)
+def set_latest(sender, instance, created, **kwargs):
+    m_sender= instance.sender
+    m_recipient = instance.recipient
+    text = instance.text
+    obj = LatestMessage.objects.filter(senders=m_sender).filter(senders=m_recipient)
+    if obj:
+        obj.update(text=text)
+    else:
+        LatestMessage.objects.create(text=text).senders.add(m_sender, m_recipient)
