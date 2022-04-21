@@ -1,15 +1,10 @@
-from django.views.generic import TemplateView, DetailView, UpdateView
+from django.views.generic import TemplateView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.contrib.auth.hashers import make_password
 from django.conf.global_settings import LANGUAGES
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
-from rest_framework.generics import CreateAPIView, ListAPIView, UpdateAPIView
-from rest_framework.permissions import IsAuthenticated, BasePermission
-from django_filters import rest_framework as filters
 from django_countries import countries
-from .models import LatestMessage, Profile, User, Message
-from .serializers import ProfileReadSerializer, UserSerializer, ProfileWriteSerializer
+from .models import Profile, User, Message
 
 
 class HomeView(LoginRequiredMixin, TemplateView):
@@ -63,51 +58,3 @@ class ChatView(LoginRequiredMixin, TemplateView):
         context["to_user"] = to_user
 
         return context
-
-
-class UserCreateView(CreateAPIView):
-    serializer_class = UserSerializer
-    
-    def post(self, request, *args, **kwargs):
-        password = request.data["password"]
-        request.data["password"] = make_password(password)
-        return super().post(request, *args, **kwargs)
-
-
-class ProfileFilter(filters.FilterSet):
-    min_age = filters.NumberFilter(field_name='age', lookup_expr='gte')
-    max_age = filters.NumberFilter(field_name='age', lookup_expr='lte')
-
-    class Meta:
-        model = Profile
-        fields = [
-            "gender", "country", "native_language", "practising_language"
-        ]
-
-
-class ProfileListView(ListAPIView):
-    queryset = Profile.objects.all()
-    serializer_class = ProfileReadSerializer
-    filter_backends = (filters.DjangoFilterBackend,)
-    filterset_class = ProfileFilter
-    permission_classes = [IsAuthenticated]
-
-    def get_queryset(self):
-        queryset = self.queryset.filter(country__isnull=False) \
-                                .exclude(user=self.request.user) \
-                                .order_by("user__last_login")
-        return queryset
-
-
-class IsOwnerOrAdmin(BasePermission):
-
-    def has_object_permission(self, request, view, obj):
-        return request.user.is_staff or request.user == obj.user
-
-
-class ProfileUpdateView(UpdateAPIView):
-    serializer_class = ProfileWriteSerializer
-    queryset = Profile.objects.all()
-    lookup_field = "user__username"
-    lookup_url_kwarg = "username"
-    permission_classes = [IsAuthenticated, IsOwnerOrAdmin]

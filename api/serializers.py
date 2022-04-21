@@ -1,6 +1,5 @@
-from webbrowser import get
 from rest_framework import serializers
-from .models import GENDERS, User, Profile
+from pages.models import User, Profile
 
 
 class UserSerializer(serializers.ModelSerializer): 
