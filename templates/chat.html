@@ -1,0 +1,118 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block head %}
+    <title>Chat</title>
+    <link rel="stylesheet" href="{% static 'css/chat.css' %}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+    integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous"> 
+{% endblock %}
+
+{% block content %}
+<div id="frame">
+  <div id="sidepanel">
+    <div id="top-search">
+    <div id="search">
+      <input type="text" placeholder="Search contacts..." />
+      <label for=""><i class="fa fa-search" aria-hidden="true"></i></label>
+    </div>
+    <button class="btn btn-primary"><i class="fa fa-plus"></i></button>
+    </div>
+  <div id="contacts" >
+    <ul class="list-unstyled" id="chatedPeople">
+      {% for latest_message in latest_messages %}
+        {% if latest_message.senders.first != request.user %}
+        <li class="contact" id="contact{{latest_message.senders.first}}" {% if msg.senders.first == otheruser %} style="background-color: #eaeef3;" {% endif %}>
+            <a href="{% url 'chat' latest_message.senders.first%}">
+              <div class="wrap">
+                <div class="img-block">
+                  </span><img src="{{ latest_message.senders.first.profile.image.url }}" alt="" />
+                </div>                       
+                <div class="meta">
+                  <h5 class="name bold my-0 text-primary">{{latest_message.senders.first}}</h5>
+                  <p class="preview" id="latest{{latest_message.senders.first}}" style="text-overflow: ellipsis;">{{latest_message.text}}</p>
+                </div>
+                <small id = "alert{{latest_message.senders.first}}" class="chat-alert badge badge-success">1</small>          
+              </div>
+            </li>
+          </a> 
+        {% else %} 
+        <li class="contact" id="contact{{latest_message.senders.last}}">
+          <a href="{% url 'chat' latest_message.senders.last %}">
+            <div class="wrap">
+              <div class="img-block">
+                </span><img src="{{ latest_message.senders.last.profile.image.url }}" alt="" />
+              </div>                       
+              <div class="meta">
+                <h5 class="name bold my-0 text-primary">{{latest_message.senders.last}}</h5>
+                <p class="preview" id="latest{{latest.senders.last}}" style="text-overflow: ellipsis;">{{latest_message.text}}</p>
+              </div>      
+              <small id = "alert{{latest.senders.last}}" class="chat-alert badge badge-success">3</small>
+            </div>
+          </li>
+        </a>
+        {% endif %}
+      {% endfor %} 
+    </ul>
+  </div>
+  </div>
+
+  {% if to_user %}
+  <div class="content">
+    <div class="contact-profile">
+      <a href="{% url 'profile' to_user %}">
+      <img src="{{ to_user.profile.image.url }}" alt="" />
+      <div class="green_icon"></div>    
+      <div class="text-area">
+        <h4 id = "name-section" class="bold my-0">{{to_user}}</h4></a>
+        {% if to_user.profile.is_online %}
+        <p><i>Online</i></p>
+        {% else %}                 
+        <p><i> Last Seen : {{ to_user.last_login | date:'G:i | F d'}}</i></p>
+        {% endif %}          
+      </div>   
+    </div>
+    <div class="messages"  id="messages" >
+      <ul class="list-unstyled" id="chats">
+        {% for message in messages %}
+          {% ifchanged chat.created.date %} 
+          <li class="msg-day"><small>{{message.created_at.date}}</small></li>
+          {% endifchanged %}
+          {% if message.sender == to_user %}
+            <li class="sent">
+              <div class="img-block">
+                </span><img src="{{ to_user.profile.image.url }}" alt="">
+              </div>
+              <div class="msgbox">
+                <p>{{message.text}} </p>
+                <small class="timeBlock">{{ message.created_at | date:'G:i' }}</small>
+              </div>
+            </li>
+          {% elif  message.recipient == to_user %}
+            <li class="replies">
+                <div class="img-block">                     
+                  <img src="{{ user.profile.image.url }}" alt="" />
+                </div>
+                <div class="msgbox">
+                  <p>{{ message.text }}</p>
+                  <small class="timeBlock">{{ message.created_at | date:'G:i' }}</small>
+                </div>
+            </li>          
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="message-input">
+      <div class="wrap">
+        <form id="messageBox"  method="POST" autocomplete="off">
+          {% csrf_token %}
+          <textarea oninput="auto_grow(this)" type="text" name="messagetext" id="messageText" rows="1"  placeholder="Write your message..."  autofocus ></textarea>
+          <button class="submit" type="submit" form="messageBox" id="sendButton" ><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+        </form>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+<script type="text/javascript" src="{% static 'js/chat.js' %}"></script>
+{% endblock %}

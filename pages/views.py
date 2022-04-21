@@ -2,11 +2,13 @@ from django.views.generic import TemplateView, DetailView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.contrib.auth.hashers import make_password
 from django.conf.global_settings import LANGUAGES
+from django.shortcuts import get_object_or_404
+from django.db.models import Q
 from rest_framework.generics import CreateAPIView, ListAPIView, UpdateAPIView
 from rest_framework.permissions import IsAuthenticated, BasePermission
 from django_filters import rest_framework as filters
 from django_countries import countries
-from .models import Profile, User
+from .models import LatestMessage, Profile, User, Message
 from .serializers import ProfileReadSerializer, UserSerializer, ProfileWriteSerializer
 
 
@@ -15,10 +17,10 @@ class HomeView(LoginRequiredMixin, TemplateView):
     template_name = "home.html"
 
     def get_context_data(self, **kwargs):
-       context = super().get_context_data(**kwargs)
-       context["languages"] = LANGUAGES
-       context["countries"] = countries
-       return context
+        context = super().get_context_data(**kwargs)
+        context["languages"] = LANGUAGES
+        context["countries"] = countries
+        return context
 
 
 class ProfileDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
@@ -37,6 +39,30 @@ class ProfileDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView)
 
     def has_permission(self):
         return self.request.user == self.get_object().user
+
+
+class ChatView(LoginRequiredMixin, TemplateView):
+    login_url = "login"
+    template_name = "chat.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+        path = self.kwargs.get("to_user")
+        latest_messages = user.latestmessage_set.all().order_by("-created_at")
+        context["latest_messages"] = latest_messages  
+        
+        to_user = None
+        if path != "inbox":
+            to_user = get_object_or_404(User, username=path)
+            messages = Message.objects.filter(Q(
+                Q(sender=user) & Q(recipient=to_user)) \
+                | (Q(sender=to_user) & Q(recipient=user)
+            ))
+            context["messages"] = messages
+        context["to_user"] = to_user
+
+        return context
 
 
 class UserCreateView(CreateAPIView):

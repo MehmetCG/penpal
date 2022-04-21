@@ -13,6 +13,7 @@ urlpatterns = [
     path("logout/", LogoutView.as_view(template_name="login.html"), name="logout"),
     path("", HomeView.as_view(), name="home" ),
     path("profile/<username>/", ProfileDetailView.as_view(), name="profile"),
+    path("chat/<to_user>/", ChatView.as_view(), name="chat"),
     path("api/user_create/", UserCreateView.as_view(), name="user-create"),
     path("api/profile_list/", ProfileListView.as_view(), name="profile-list"),
     path("api/profile_update/<username>/", ProfileUpdateView.as_view(), name="profile-update"),
