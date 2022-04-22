@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'django_countries',
     'rest_framework',
     'django_filters',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -77,6 +78,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'penpal.wsgi.application'
+ASGI_APPLICATION = 'penpal.asgi.application'
 
 
 # Database
@@ -93,6 +95,14 @@ DATABASES = {
    }
 }
 
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("redis", 6379)]
+        }
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators

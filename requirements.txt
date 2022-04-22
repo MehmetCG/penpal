@@ -5,3 +5,5 @@ django-environ==0.8.1
 django-countries==7.3.2
 psycopg2==2.9.3
 Pillow==9.1.0
+django-channels==0.7.0
+channels-redis==3.4.0
