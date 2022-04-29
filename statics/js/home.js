@@ -35,7 +35,7 @@ $(document).ready(function(){
                     +'<div class="body"><div class="row"><div class="col-lg-4 col-md-4 col-12">'
                     +'<div class="profile-image float-md-right" style="text-align: center;" >'
                     +'<img src="'+profile.image+'" alt="" ><div><h4 class="m-t-0 m-b-0">'
-                    +'<strong>'+profile.username+'</strong></h4>'+'<a href="/chat/'+profile.username+'">'
+                    +'<strong>'+profile.username+'</strong></h4><a href="/chat/'+profile.user+'">'
                     +'<button class="btn btn-primary btn-round btn-simple">Message</button></a>'
                     +'</div></div></div><div class="col-lg-8 col-md-8 col-12">'
                     +'<table class="table table-user-information"><tbody><tr><td>Status:</td>'

@@ -23,7 +23,7 @@
       {% for latest_message in latest_messages %}
         {% if latest_message.senders.first != request.user %}
         <li class="contact" id="contact{{latest_message.senders.first}}" {% if msg.senders.first == otheruser %} style="background-color: #eaeef3;" {% endif %}>
-            <a href="{% url 'chat' latest_message.senders.first%}">
+            <a href="{% url 'chat' latest_message.senders.first.id%}">
               <div class="wrap">
                 <div class="img-block">
                   </span><img src="{{ latest_message.senders.first.profile.image.url }}" alt="" />
@@ -37,7 +37,7 @@
             </li>
           </a> 
         {% else %} 
-        <li class="contact" id="contact{{latest_message.senders.last}}">
+        <li class="contact" id="contact{{latest_message.senders.last.id}}">
           <a href="{% url 'chat' latest_message.senders.last %}">
             <div class="wrap">
               <div class="img-block">

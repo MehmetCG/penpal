@@ -43,13 +43,13 @@ class ChatView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user = self.request.user
-        path = self.kwargs.get("to_user")
+        path = self.kwargs.get("to_user_id")
         latest_messages = user.latestmessage_set.all().order_by("-created_at")
         context["latest_messages"] = latest_messages  
         
         to_user = None
         if path != "inbox":
-            to_user = get_object_or_404(User, username=path)
+            to_user = get_object_or_404(User, id=path)
             messages = Message.objects.filter(Q(
                 Q(sender=user) & Q(recipient=to_user)) \
                 | (Q(sender=to_user) & Q(recipient=user)
