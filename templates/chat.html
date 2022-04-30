@@ -58,6 +58,7 @@
   </div>
 
   {% if to_user %}
+  {{ to_user_id|json_script:"to_user_id" }}
   <div class="content">
     <div class="contact-profile">
       <a href="{% url 'profile' to_user %}">
@@ -106,7 +107,7 @@
       <div class="wrap">
         <form id="messageBox"  method="POST" autocomplete="off">
           {% csrf_token %}
-          <textarea oninput="auto_grow(this)" type="text" name="messagetext" id="messageText" rows="1"  placeholder="Write your message..."  autofocus ></textarea>
+          <textarea oninput="autoGrow(this)" type="text" name="messagetext" id="messageText" rows="1"  placeholder="Write your message..."  autofocus ></textarea>
           <button class="submit" type="submit" form="messageBox" id="sendButton" ><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
         </form>
       </div>

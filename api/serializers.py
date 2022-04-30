@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from pages.models import User, Profile
+from pages.models import User, Profile, Message
 
 
 class UserSerializer(serializers.ModelSerializer): 
@@ -32,3 +32,10 @@ class ProfileWriteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         exclude = ("image",)
+
+
+class MessageSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Message
+        fields = "__all__"
