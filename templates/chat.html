@@ -22,7 +22,7 @@
     <ul class="list-unstyled" id="chatedPeople">
       {% for latest_message in latest_messages %}
         {% if latest_message.senders.first != request.user %}
-        <li class="contact" id="contact{{latest_message.senders.first}}" {% if msg.senders.first == otheruser %} style="background-color: #eaeef3;" {% endif %}>
+        <li class="contact" id="contact{{latest_message.senders.first.id}}" {% if latest_message.senders.first == to_user %} style="background-color: #edeaf3;" {% endif %}>
             <a href="{% url 'chat' latest_message.senders.first.id%}">
               <div class="wrap">
                 <div class="img-block">
@@ -30,24 +30,24 @@
                 </div>                       
                 <div class="meta">
                   <h5 class="name bold my-0 text-primary">{{latest_message.senders.first}}</h5>
-                  <p class="preview" id="latest{{latest_message.senders.first}}" style="text-overflow: ellipsis;">{{latest_message.text}}</p>
+                  <p class="preview" id="latest{{latest_message.senders.first.id}}" style="text-overflow: ellipsis;">{{latest_message.text}}</p>
                 </div>
-                <small id = "alert{{latest_message.senders.first}}" class="chat-alert badge badge-success">1</small>          
+                <small id = "alert{{latest_message.senders.first.id}}" class="chat-alert badge badge-success">1</small>          
               </div>
             </li>
           </a> 
         {% else %} 
-        <li class="contact" id="contact{{latest_message.senders.last.id}}">
-          <a href="{% url 'chat' latest_message.senders.last %}">
+        <li class="contact" id="contact{{latest_message.senders.last.id}}" {% if latest_message.senders.last == to_user %} style="background-color: #edeaf3;" {% endif %}>
+          <a href="{% url 'chat' latest_message.senders.last.id %}">
             <div class="wrap">
               <div class="img-block">
                 </span><img src="{{ latest_message.senders.last.profile.image.url }}" alt="" />
               </div>                       
               <div class="meta">
                 <h5 class="name bold my-0 text-primary">{{latest_message.senders.last}}</h5>
-                <p class="preview" id="latest{{latest.senders.last}}" style="text-overflow: ellipsis;">{{latest_message.text}}</p>
+                <p class="preview" id="latest{{latest_message.senders.last.id}}" style="text-overflow: ellipsis;">{{latest_message.text}}</p>
               </div>      
-              <small id = "alert{{latest.senders.last}}" class="chat-alert badge badge-success">3</small>
+              <small id = "alert{{latest.senders.last.id}}" class="chat-alert badge badge-success">3</small>
             </div>
           </li>
         </a>

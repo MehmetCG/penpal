@@ -55,6 +55,9 @@ class LatestMessage(models.Model):
     created_at = models.DateTimeField(auto_now=True)
     text = models.TextField(blank=True, null=True)
 
+    def __str__(self):
+        return f"The latest message between {self.senders.first()} and {self.senders.last()}"
+
 
 @receiver(post_save, sender=User)
 def create_profile(sender, instance, created, **kwargs):
@@ -80,8 +83,9 @@ def set_latest(sender, instance, created, **kwargs):
     m_sender= instance.sender
     m_recipient = instance.recipient
     text = instance.text
-    obj = LatestMessage.objects.filter(senders=m_sender).filter(senders=m_recipient)
+    obj = LatestMessage.objects.filter(senders=m_sender).filter(senders=m_recipient).first()
     if obj:
-        obj.update(text=text)
+        obj.text = text
+        obj.save()
     else:
         LatestMessage.objects.create(text=text).senders.add(m_sender, m_recipient)

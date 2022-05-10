@@ -41,6 +41,8 @@ $(document).ready(function(){
         }else{
             appendMessage(data, "sent");
         }
+        $("#contact"+toUserID).prependTo("#chatedPeople");
+        $("#latest"+toUserID).text(data.text);
         scrollToBottom("messages")
     };
 
