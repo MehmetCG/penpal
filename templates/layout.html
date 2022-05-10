@@ -1,4 +1,6 @@
 {% load static %}
+{% load custom_filter %}
+
 <!DOCTYPE html>
 <html lang="en" translate="no">
 <head> 
@@ -13,17 +15,18 @@
 </head>
 <body>
   {{ request.user.id|json_script:"user_id" }}
+  {% count_unread_messages request.user as unread_messages %}
   <nav class="navbar navbar-expand-lg navbar-dark bg-primary" style="position: fixed; width:100%; z-index: 9999;">
     <a class="navbar-brand" href="{% url 'home'%}">Home</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main_nav" aria-expanded="false" aria-label="Toggle navigation">
-      <small id="alertlayout" class="chat-alert-layout badge badge-success">2</small>        
+      <small id="alertlayout" class="chat-alert-layout badge badge-success" {% if not unread_messages %} style="display: none;" {% endif %}>{{unread_messages}}</small>        
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="main_nav">
       <ul class="navbar-nav">        
           <li class="nav-item active"> <a class="nav-link" href="{% url 'profile' user %}">Profile</a> </li>
           <li class="nav-item"><a class="nav-link" href="{% url 'chat' 'inbox' %}" > Inbox 
-            <small id="alertlayout2" class="chat-alert-layout badge badge-success">2</small>        
+            <small id="alertlayout2" class="chat-alert-layout badge badge-success" {% if not unread_messages %} style="display: none;" {% endif %}>{{unread_messages}}</small>        
           </a></li>           
       </ul>
       <ul class="navbar-nav ml-auto">

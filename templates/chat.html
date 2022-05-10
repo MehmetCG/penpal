@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% load static %}
+{% load custom_filter %}
 
 {% block head %}
     <title>Chat</title>
@@ -32,7 +33,8 @@
                   <h5 class="name bold my-0 text-primary">{{latest_message.senders.first}}</h5>
                   <p class="preview" id="latest{{latest_message.senders.first.id}}" style="text-overflow: ellipsis;">{{latest_message.text}}</p>
                 </div>
-                <small id = "alert{{latest_message.senders.first.id}}" class="chat-alert badge badge-success">1</small>          
+                {% count_unread_messages request.user latest_message.senders.first as unread_messages %}
+                <small id = "alert{{latest_message.senders.first.id}}" class="chat-alert badge badge-success" {% if not unread_messages %} style="display: none;" {% endif %}>{{unread_messages}}</small>          
               </div>
             </li>
           </a> 
@@ -46,8 +48,9 @@
               <div class="meta">
                 <h5 class="name bold my-0 text-primary">{{latest_message.senders.last}}</h5>
                 <p class="preview" id="latest{{latest_message.senders.last.id}}" style="text-overflow: ellipsis;">{{latest_message.text}}</p>
-              </div>      
-              <small id = "alert{{latest.senders.last.id}}" class="chat-alert badge badge-success">3</small>
+              </div>
+              {% count_unread_messages request.user latest_message.senders.last as unread_messages %}      
+              <small id = "alert{{latest.senders.last.id}}" class="chat-alert badge badge-success" {% if not unread_messages %} style="display: none;" {% endif %}>{{unread_messages}}</small>
             </div>
           </li>
         </a>
