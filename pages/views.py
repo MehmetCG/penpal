@@ -55,6 +55,7 @@ class ChatView(LoginRequiredMixin, TemplateView):
                 | (Q(sender=to_user) & Q(recipient=user)
             ))
             context["messages"] = messages
+            Message.read_all(to_user, user)
         context["to_user"] = to_user
 
         return context

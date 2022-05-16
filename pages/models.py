@@ -49,6 +49,11 @@ class Message(models.Model):
     def __str__(self):
         return self.text
 
+    @classmethod
+    def read_all(cls, sender, reader):
+        unread_messages = cls.objects.filter(sender=sender, recipient=reader)
+        unread_messages.update(is_seen=True)
+        
 
 class LatestMessage(models.Model):
     senders = models.ManyToManyField(User)
