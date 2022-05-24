@@ -50,7 +50,7 @@
                 <p class="preview" id="latest{{latest_message.senders.last.id}}" style="text-overflow: ellipsis;">{{latest_message.text}}</p>
               </div>
               {% count_unread_messages request.user latest_message.senders.last as unread_messages %}      
-              <small id = "alert{{latest.senders.last.id}}" class="chat-alert badge badge-success" {% if not unread_messages %} style="display: none;" {% endif %}>{{unread_messages}}</small>
+              <small id = "alert{{latest_message.senders.last.id}}" class="chat-alert badge badge-success" {% if not unread_messages %} style="display: none;" {% endif %}>{{unread_messages}}</small>
             </div>
           </li>
         </a>
