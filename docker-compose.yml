@@ -28,3 +28,14 @@ services:
         condition: service_healthy
   redis:
     image: redis:alpine
+  celery:
+    build: .
+    command: >
+      sh -c "celery -A penpal worker -l INFO &&
+             celery -A penpal beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler"
+    volumes:
+    - .:/code
+    depends_on:
+      - db
+      - redis
+      - web
