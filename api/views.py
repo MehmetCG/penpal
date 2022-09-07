@@ -4,7 +4,7 @@ from rest_framework.permissions import IsAuthenticated, BasePermission
 from django_filters import rest_framework as filters
 from .serializers import ProfileReadSerializer, UserSerializer, ProfileWriteSerializer
 from pages.models import Profile, Message
-
+from .tasks import send_email
 
 class UserCreateView(CreateAPIView):
     serializer_class = UserSerializer
@@ -12,8 +12,10 @@ class UserCreateView(CreateAPIView):
     def post(self, request, *args, **kwargs):
         password = request.data["password"]
         request.data["password"] = make_password(password)
-        return super().post(request, *args, **kwargs)
-
+        response = super().post(request, *args, **kwargs)
+        email = response.data["email"]
+        send_email.delay("test", "test", email)
+        return response
 
 class ProfileFilter(filters.FilterSet):
     min_age = filters.NumberFilter(field_name='age', lookup_expr='gte')
